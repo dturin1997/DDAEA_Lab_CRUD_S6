@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 using Entidad;
 namespace Datos
 {
-    public class DRegion
+    public class DProducto
     {
-        private string connectionString= "Data Source=HUGO-PC\\SQLEXPRESS;Initial Catalog=CAVV_MonitoreoViolencia;Integrated Security=True;";
+        private string connectionString= "Data Source=LAB707-03\\SQLEXPRESS01;Initial Catalog=db_lab_s5;Integrated Security=True;";
 
        
-        public   List<Region> Listar()
+        public   List<Producto> Listar()
         {
 
             //Obtengo la conexión
             SqlConnection connection = null;
             SqlParameter param = null;
             SqlCommand command = null;
-            List<Region> regiones = null;
+            List<Producto> productos = null;
             try
             {
                 connection = new SqlConnection(connectionString);
@@ -28,70 +28,72 @@ namespace Datos
                 connection.Open();
 
                 //Hago mi consulta
-                command = new SqlCommand("USP_GetRegion", connection);
+                command = new SqlCommand("USP_GetProducto", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                //param = new SqlParameter();
-                //param.ParameterName = "@Description";
-                //param.SqlDbType = SqlDbType.VarChar;
-                //param.Value = description;
+                param = new SqlParameter();
+                param.ParameterName = "@Nombre";
+                param.SqlDbType = SqlDbType.VarChar;
+                param.Value = "";
 
-                //command.Parameters.Add(param);
+                command.Parameters.Add(param);
 
                 SqlDataReader reader = command.ExecuteReader();
-                regiones = new List<Region>();
+                productos = new List<Producto>();
 
 
                 while (reader.Read())
                 {
 
-                    Region region = new Region();
-                    region.IdRegion = (int)reader["RegionID"];
-                    region.Description = reader["Description"].ToString();
-                    region.Code = reader["Code"].ToString();
+                    Producto producto = new Producto();
+                    producto.Id = (int)reader["Id"];
+                    producto.Nombre = reader["Nombre"].ToString();
+                    producto.Precio = (int)reader["Precio"];
+                    producto.FechaCreacion = (DateTime)reader["FechaCreacion"];
 
-                    regiones.Add(region);
+                    productos.Add(producto);
 
                 }
 
                 connection.Close();
 
                 //Muestro la información
-                return regiones;
+                return productos;
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 connection.Close();
-                throw;
+                throw ex;
             }
             finally
             {
                 connection = null;
                 command = null;
                 param = null;
-                regiones = null;
+                productos = null;
 
             }
 
 
         }
 
-        public void Insertar(Region region)
+        public void Insertar(Producto producto)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("USP_InsRegion", connection); // Nombre del procedimiento almacenado
+                    SqlCommand command = new SqlCommand("USP_InsertProducto", connection); // Nombre del procedimiento almacenado
                     command.CommandType = CommandType.StoredProcedure;
 
                     // Parámetros del procedimiento almacenado                
-                    command.Parameters.AddWithValue("@RegionID", region.IdRegion);
-                    command.Parameters.AddWithValue("@Code", region.Code);
-                    command.Parameters.AddWithValue("@Description", region.Description);
+                    command.Parameters.AddWithValue("@Id", producto.Id);
+                    command.Parameters.AddWithValue("@Nombre", producto.Nombre);
+                    command.Parameters.AddWithValue("@Precio", producto.Precio);
+                    command.Parameters.AddWithValue("@FechaCreacion", producto.FechaCreacion);
 
                     command.ExecuteNonQuery();
                 }

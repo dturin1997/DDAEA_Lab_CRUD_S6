@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace DemoADONET2023
 {
-    public partial class NuevaRegion : Form
+    public partial class NuevoProducto : Form
     {
-        public NuevaRegion()
+        public NuevoProducto()
         {
             InitializeComponent();
         }
@@ -23,11 +23,11 @@ namespace DemoADONET2023
 
             try
             {
-                BRegion negocio = new BRegion();
-                negocio.Insertar(new Entidad.Region
+                BProducto negocio = new BProducto();
+                negocio.Insertar(new Entidad.Producto
                 {
-                    Code = txtCode.Text,
-                    Description = txtDescription.Text,
+                    Nombre = txtNombre.Text,
+                    Precio = int.Parse(txtPrecio.Text),
                 });
                 MessageBox.Show("Registro exitoso");
             }
@@ -38,6 +38,12 @@ namespace DemoADONET2023
             }
             
 
+        }
+
+        private void btnListar_Click(object sender, EventArgs e)
+        {
+            BProducto negocio = new BProducto();
+            dataGridView1.DataSource = negocio.Listar(txtNombre.Text);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace DemoADONET2023
         private void btnListar_Click(object sender, EventArgs e)
         {
 
-            BRegion negocio= new BRegion();
+            BProducto negocio= new BProducto();
             dgvDemo.DataSource = negocio.Listar(txtDescription.Text);
 
         }
@@ -43,8 +43,9 @@ namespace DemoADONET2023
             
         }
 
-         
+        private void dgvDemo_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
-    
+        }
     }
 }
