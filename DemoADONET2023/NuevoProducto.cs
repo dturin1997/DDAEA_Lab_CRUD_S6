@@ -31,9 +31,9 @@ namespace DemoADONET2023
                 });
                 MessageBox.Show("Registro exitoso");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Error " + ex);
 
             }
             
@@ -44,6 +44,61 @@ namespace DemoADONET2023
         {
             BProducto negocio = new BProducto();
             dataGridView1.DataSource = negocio.Listar(txtNombre.Text);
+        }
+
+        private void NuevoProducto_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_DoubleClick(object sender, EventArgs e)
+        {
+            txtId.Text = dataGridView1.CurrentRow.Cells["Id"].Value.ToString();
+            txtNombre.Text = dataGridView1.CurrentRow.Cells["Nombre"].Value.ToString();
+            txtPrecio.Text = dataGridView1.CurrentRow.Cells["Precio"].Value.ToString();
+            txtFechaCreacion.Text = dataGridView1.CurrentRow.Cells["FechaCreacion"].Value.ToString();
+            txtActivo.Text = dataGridView1.CurrentRow.Cells["Activo"].Value.ToString();
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BProducto negocio = new BProducto();
+                negocio.Actualizar(new Entidad.Producto
+                {
+                    Id=int.Parse(txtId.Text),
+                    Nombre = txtNombre.Text,
+                    Precio = int.Parse(txtPrecio.Text),
+                    FechaCreacion = DateTime.Parse(txtFechaCreacion.Text),
+                    Activo = Boolean.Parse(txtActivo.Text),
+                });
+                MessageBox.Show("Actualizacion exitosa");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex);
+
+            }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                BProducto negocio = new BProducto();
+                negocio.Eliminar(new Entidad.Producto
+                {
+                    Id = int.Parse(txtId.Text),
+                    Activo = Boolean.Parse(txtActivo.Text),
+                });
+                MessageBox.Show("Eliminación exitosa");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error " + ex);
+
+            }
         }
     }
 }

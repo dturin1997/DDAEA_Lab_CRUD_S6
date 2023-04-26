@@ -33,6 +33,7 @@ namespace Negocio
                 var max= productos.Select(x=>x.Id).Max();
                 producto.Id = max+1;
                 producto.FechaCreacion = DateTime.Now;
+                producto.Activo = true;
 
                 datos.Insertar(producto);
             }
@@ -42,6 +43,34 @@ namespace Negocio
                 throw ex;
             }
             
+        }
+
+        public void Actualizar(Producto producto)
+        {
+            try
+            {
+                datos.Actualizar(producto);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public void Eliminar(Producto producto)
+        {
+            try
+            {
+                datos.Eliminar(producto);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }
